@@ -1,0 +1,189 @@
+[
+    
+    {
+        "name": "Pose",
+        "singles": {
+            "aa": ["Arms", "Arms"],
+            "ab": ["RightProp", "HandProp"],
+            "ac": ["LeftProp", "HandProp"],
+            "bb": ["RightLeg", "Leg"],
+            "bd": ["LeftLeg", "Leg"],
+            "ba": ["Head", "HeadRotation"],
+            "be": ["Body", "BodyRotation"],
+            "bc": ["Placement", "Placement"],
+            "ad": ["Massage", "Massage"],
+            "ae": ["BreastPosition", "BreastPosition"]
+        },
+        "arrays": {}
+    },
+    {
+        "name": "Hair",
+        "singles": {
+            "ea": ["Main", "MainHair"],
+            "ec": ["Back", "BackHair"],
+            "ed": ["Bangs", "Bangs"],
+            "ef": ["RightSide", "HairSide"],
+            "eg": ["LeftSide", "HairSide"]
+        },
+        "arrays": {
+            "r": ["Ahoges", "Ahoge"]
+        }
+    },
+    {
+        "name": "Appearance",
+        "singles": {
+            "ca": ["BodyShape", "BodyShape"],
+            "da": ["Skin", "Skin"],
+            "db": ["Tan", "Tan"],
+            "dd": ["Head", "Head"],
+            "dh": ["Nipples", "Nipples"],
+            "di": ["Breasts", "Breasts"],
+            "qa": ["Penis", "Penis"],
+            "qb": ["Balls", "Balls"],
+            "dc": ["Vagina", "Vagina"],
+            "eh": ["Pubes", "PubicHair"],
+            "pb": ["AnimalEars", "AnimalEars"],
+            "pc": ["Horns", "Horns"],
+            "pd": ["Wings", "Wings"],
+            "pe": ["Tail", "Tail"]
+        },
+        "arrays": {}
+    },
+    {
+        "name": "Face",
+        "singles": {
+            "fa": ["Eyes", "Eyes"],
+            "fb": ["Eyelids", "Eyelids"],
+            "fh": ["EyeBottoms", "EyelidBottom"],
+            "fk": ["Eyelashes", "Eyelash"],
+            "fc": ["Iris", "Iris"],
+            "fj": ["Pupils", "Pupil"],
+            "fd": ["Eyebrows", "Eyebrows"],
+            "fe": ["Mouth", "Mouth"],
+            "ff": ["Freckles", "BitField"],
+            "fg": ["Nose", "Nose"],
+            "fi": ["NoseHighlight", "NoseHilite"],
+            "pa": ["Ears", "Ear"]
+        },
+        "arrays": {
+            "t": ["FacePaint", "FacePaint"]
+        }
+    },
+    {
+        "name": "Expression",
+        "singles": {
+            "ga": ["NULL1", "NULL"],
+            "gb": ["NULL2", "NULL"],
+            "gh": ["NULL3", "NULL"],
+            "gc": ["Blush", "Blush"],
+            "gd": ["Tears", "BitField"],
+            "ge": ["EmotionIcon", "BitField"],
+            "gf": ["SpeechBubble", "Shape"],
+            "gg": ["Eyes", "SpecialEyes"],
+            "ha": ["Blink", "Blink"],
+            "hb": ["Look", "Look"],
+            "hc": ["Brows", "ExpressionBrow"],
+            "hd": ["Mouth", "ExpressionMouth"]
+        },
+        "arrays": {}
+    },
+    {
+        "name": "Clothing",
+        "singles": {
+            "ia": ["Jacket", "Jacket"],
+            "if": ["Sweater", "Sweater"],
+            "ib": ["Shirt", "Shirt"],
+            "id": ["Undershirt", "Undershirt"],
+            "ic": ["Skirt", "Skirt"],
+            "jc": ["Panythose", "PantyHose"],
+            "ie": ["Pants", "Pants"],
+            "ja": ["RightSock", "Clothes"],
+            "jb": ["LeftSock", "Clothes"],
+            "jd": ["RightShoe", "Shoe"],
+            "je": ["LeftShoe", "Shoe"],
+            "jf": ["RightAnklet", "Clothes"],
+            "jg": ["LeftAnklet", "Clothes"],
+            "ka": ["Bra", "Swimsuit"],
+            "kb": ["Panties", "Clothes"],
+            "kc": ["RightPasty", "Pasty"],
+            "kd": ["LeftPasty", "Pasty"],
+            "ke": ["VagPasty", "Pasty"],
+            "kf": ["Bondage", "Clothes"],
+            "kg": ["Toy", "Toy"],
+            "la": ["Hat", "Hat"],
+            "lb": ["Glasses", "Glasses"],
+            "lc": ["Headband", "Headband"],
+            "oa": ["Mask", "Clothes"],
+            "os": ["Headphones", "Clothes"],
+            "ob": ["RightEaring", "Clothes"],
+            "oc": ["LeftEaring", "Clothes"],
+            "od": ["Choker", "Choker"],
+            "oe": ["Necklace", "Necklace"],
+            "of": ["Tie", "Tie"],
+            "og": ["RightBracelet", "Clothes"],
+            "oh": ["LeftBracelet", "Clothes"],
+            "oo": ["RightArmlet", "Clothes"],
+            "op": ["LeftArmlet", "Clothes"],
+            "oq": ["RightArmband", "Clothes"],
+            "or": ["LeftArmband", "Clothes"],
+            "oi": ["RightGlove", "Glove"],
+            "oj": ["LeftGlove", "Glove"],
+            "ok": ["RightElbow", "Clothes"],
+            "ol": ["LeftElbow", "Clothes"],
+            "om": ["RightBicep", "Clothes"],
+            "on": ["LeftBicep", "Clothes"]
+        },
+        "arrays": {
+            "m": ["HairPieces", "HairPiece"],
+            "n": ["HairClips", "HairClip"],
+            "s": ["Belts", "Belt"]
+        }
+    },
+    {
+        "name": "Shader",
+        "singles": {
+            "bf": ["Shadow", "Shadow"],
+            "bg": ["Blur", "Blur"],
+            "bh": ["Expression", "BlurExpression"],
+            "bi": ["Effect", "ShaderEffect"]
+        },
+        "arrays": {}
+    },
+    {
+        "name": "ExternalParts",
+        "singles": {},
+        "arrays": {
+            "f": ["Images", "Image"]
+        }
+    },
+    {
+        "name": "GlobalParts",
+        "singles": {},
+        "arrays": {
+            "a": ["Arms", "GlobalArm"],
+            "b": ["Props", "Clothes"],
+            "c": ["Sleeves", "Clothes"],
+            "d": ["Bracelets", "Clothes"],
+            "e": ["Decorations", "GlobalDecoration"],
+            "w": ["Hairpieces", "GlobalHairpiece"],
+            "x": ["Belts", "GlobalBelt"],
+            "y": ["Flags", "GlobalFlag"],
+            "z": ["SpeechBubbles", "GlobalSpeech"]
+        }
+    },
+    {
+        "name": "Scene",
+        "singles": {
+            "ua": ["Background", "Background"],
+            "uf": ["Floor", "Floor"],
+            "ue": ["Stage", "Stage"],
+            "ub": ["Crowd", "Stage"],
+            "ud": ["Censor", "Censor"],
+            "uc": ["Camera", "Camera"]
+        },
+        "arrays": {
+            "u": ["TextBoxes", "TextBox"],
+            "v": ["Images", "TextBox"]
+        }
+    }
+]

@@ -1,0 +1,40 @@
+{
+        "destdir": "",
+        "options": [
+                {
+                    "name": "",
+                    "sources": [
+                        {
+                            "tags": ["mouth", "happy"],
+                            "source": "internal",
+                            "path": "expr/smile",
+                            "name": "smile"
+                        },
+                        {
+                            "tags": ["mouth", "mad"],
+                            "source": "external",
+                            "path": "../../glare",
+                            "name": "glare",
+                            "blacklist": ["heavy"]
+                        }
+                    ]
+                },
+                {
+                    "sources": [
+                        {
+                            "tags": ["heavy"],
+                            "source": "internal", 
+                            "path": "clothes/warm",
+                            "name": "warm"
+                        },
+                        {
+                            "tags": ["light"],
+                            "source": "internal", 
+                            "path": "clothes/cold",
+                            "name": "cold",
+                            "blacklist": ["madden"]
+                        }
+                    ]
+                }
+        ]
+}

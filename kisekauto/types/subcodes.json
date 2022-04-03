@@ -1,0 +1,682 @@
+[
+    {
+        "name": "Ahoge",
+        "tag": "r",
+        "names": [
+            "Shape", "Color1", "Color2", "Color3", "Side", "Layer", "Width", "Height",
+            "Rotation", "X", "Y", "Gravity", "", "RotationZ", "Shaded", "RotationPreScale",
+            "AttachPoint"
+        ],
+        "poses": ["Rotation", "X", "Y", "Gravity", "RotationZ"],
+        "colors": ["Color1", "Color2", "Color3", "Shaded"],
+        "body": ["Shape", "Side", "Width", "Height", "RotationPreScale", "AttachPoint"]
+    },
+    {
+        "name": "AnimalEars",
+        "tag": "pb",
+        "names": [
+            "Shape", "Color1", "Color2", "Color3"
+        ],
+        "body": ["Shape"],
+        "colors": ["Color1", "Color2", "Color3"]
+    },
+    {
+        "name": "Arms",
+        "tag": "aa",
+        "names": [
+            "RightShoulder", "RightElbow", "RightArmLayer", "RightHandShape", "RightHandRotation",
+            "LeftShoulder", "LeftElbow", "LeftArmLayer", "LeftHandShape", "LeftHandRotation"
+        ],
+        "poses": [
+            "RightShoulder", "RightElbow", "RightArmLayer", "RightHandShape", "RightHandRotation",
+            "LeftShoulder", "LeftElbow", "LeftArmLayer", "LeftHandShape", "LeftHandRotation"
+        ]
+    },
+    {
+        "name": "BackHair",
+        "tag": "ec",
+        "names": [
+            "Shape", "Length", "Color1", "Color2", "Color3", "ScaleX", "ScaleY", "Gravity"
+        ],
+        "colors": ["Color1", "Color2", "Color3"],
+        "body": ["Shape", "Length", "ScaleX", "ScaleY", "Gravity"]
+    },
+    {
+        "name": "Background",
+        "tag": "ua",
+        "names": [
+            "Image", "Color1", "Color2", "Color3", "Height"
+        ]
+    },
+    {
+        "name": "Balls",
+        "tag": "qb",
+        "names": ["Shape", "Scale"],
+        "body": ["Shape", "Scale"]
+    },
+    {
+        "name": "Bangs",
+        "tag": "ed",
+        "names": [
+            "Shape", "", "", "", "Color1", "Color2"
+        ],
+        "colors": ["Color1", "Color2"],
+        "body": ["Shape"]
+    },
+    {
+        "name": "Belt",
+        "tag": "r",
+        "names": [
+            "Type", "Color1", "Color2", "Color3", "Side", "ScaleX", "Rotation", "OffsetX",
+            "OffsetY", "Length", "Crop", "ScaleY", "Outline", "OutlineColor", "RotationZ"
+        ],
+        "colors": ["Color1", "Color2", "Color3"],
+        "body": [
+            "Type", "Side", "ScaleX", "Rotation", "OffsetX",
+            "OffsetY", "Length", "Crop", "ScaleY", "Outline", "OutlineColor", "RotationZ"
+        ]
+    },
+    {
+        "name": "BitField",
+        "tag": "",
+        "names": ["Bits"]
+    },
+    {
+        "name": "Blink",
+        "tag": "ha",
+        "names": [
+            "RightEye", "LeftEye"
+        ],
+        "exprs": ["RightEye", "LeftEye"]
+    },
+    {
+        "name": "Blur",
+        "tag": "bg",
+        "names": [
+            "Amount", "SpreadX", "SpreadY"
+        ]
+    },
+    {
+        "name": "BlurExpression",
+        "tag": "bh",
+        "names": ["Blur"]
+    },
+    {
+        "name": "ShaderEffect",
+        "tag": "bi",
+        "names": [
+            "Effect", "Color", "Opacity", "Fill"
+        ]
+    },
+    {
+        "name": "Blush",
+        "tag": "gc",
+        "names": ["Blush", "Anger"],
+        "exprs": ["Blush", "Anger"]
+    },
+    {
+        "name": "BodyRotation",
+        "tag": "be",
+        "names": ["Rotation"],
+        "poses": ["Rotation"]
+    },
+    {
+        "name": "BodyShape",
+        "tag": "ca",
+        "names": [
+            "Height", "Stomach", "TorsoHeight", "LegLength", "TorsoWidth", "HipWidth",
+            "ArmWidth", "LegWidth", "ShoulderWidth", "Navel", "Muscle", "Scale"
+        ],
+        "body": [
+            "Height", "Stomach", "TorsoHeight", "LegLength", "TorsoWidth", "HipWidth",
+            "ArmWidth", "LegWidth", "ShoulderWidth", "Navel", "Muscle", "Scale"
+        ]
+    },
+    {
+        "name": "BreastPosition",
+        "tag": "ae",
+        "names": ["Auto", "RightBreast", "LeftBreast", "RightNipple", "LeftNipple"],
+        "poses": ["Auto", "RightBreast", "LeftBreast", "RightNipple", "LeftNipple"]
+    },
+    {
+        "name": "Breasts",
+        "tag": "di",
+        "names": ["Size"],
+        "body": ["Size"]
+    },
+    {
+        "name": "Camera",
+        "tag": "uc",
+        "names": ["Zoom", "X", "Y"]
+    },
+    {
+        "name": "Censor",
+        "tag": "ud",
+        "names": ["Type", "Color"]
+    },
+    {
+        "name": "Choker",
+        "tag": "od",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Layer"
+        ],
+        "clothes": ["Type", "Layer"],
+        "colors": ["Color1", "Color2", "Color3"]
+    },
+    {
+        "name": "Clothes",
+        "tag": "",
+        "names": [
+            "Type", "Color1", "Color2", "Color3"
+        ],
+        "clothes": ["Type"],
+        "colors": ["Color1", "Color2", "Color3"]
+    },
+    {
+        "name": "Crowd",
+        "tag": "",
+        "names": ["Type"]
+    },
+    {
+        "name": "Ear",
+        "tag": "pa",
+        "names": [
+            "Shape", "Color1", "Color2", "Color3", "ScaleX", "Rotation", "OffsetX", "OffsetY"
+        ],
+        "colors": ["Color1", "Color2", "Color3"],
+        "body": ["Shape", "ScaleX", "Rotation", "OffsetX", "OffsetY"]
+    },
+    {
+        "name": "ExpressionBrow",
+        "tag": "hc",
+        "names": [
+            "RightShape", "RightAngle", "RightHeight",
+            "LeftShape", "LeftAngle", "LeftHeight"
+        ],
+        "exprs": [
+            "RightShape", "RightAngle", "RightHeight",
+            "LeftShape", "LeftAngle", "LeftHeight"
+        ]
+    },
+    {
+        "name": "ExpressionMouth",
+        "tag": "hd",
+        "names": [
+            "Shape", "Flipped", "Width", "Height", "Outline", "OffsetX", "OffsetY", "Rotation"
+        ],
+        "exprs": [
+            "Shape", "Flipped", "Width", "Height", "Outline", "OffsetX", "OffsetY", "Rotation"
+        ]
+    },
+    {
+        "name": "Eyebrows",
+        "tag": "fd",
+        "names": ["Shape", "Layer", "Height", "Color1", "Color2"],
+        "exprs": ["Shape", "Layer", "Height"],
+        "colors": ["Color1", "Color2"]
+    },
+    {
+        "name": "Eyelids",
+        "tag": "fb",
+        "names": ["Shape"],
+        "body": ["Shape"]
+    },
+    {
+        "name": "EyelidBottom",
+        "tag": "fh",
+        "names": ["Outline"],
+        "body": ["Outline"]
+    },
+    {
+        "name": "Eyelash",
+        "tag": "fk",
+        "names": ["Shape"],
+        "body": ["Shape"]
+    },
+    {
+        "name": "Eyes",
+        "tag": "fa",
+        "names": [
+            "Shape", "OffsetX", "OffsetY", "Width", "Height",
+            "Rotation", "OutlineColor", "Layer"
+        ],
+        "colors": ["OutlineColor"],
+        "body": ["Shape", "OffsetX", "OffsetY", "Width", "Height", "Rotation", "Layer"]
+    },
+    {
+        "name": "FacePaint",
+        "tag": "t",
+        "names": [
+            "Shape", "Color1", "Color2", "Color3", "ScaleX", "ScaleY", "Rotation",
+            "OffsetX", "OffsetY", "Side", "RotationZ", "Scale", "Alpha"
+        ]
+    },
+    {
+        "name": "Floor",
+        "tag": "uf",
+        "names": ["Image", "Color1", "Color2", "Color3"]
+    },
+    {
+        "name": "Glasses",
+        "tag": "lb",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Side", "Height", "Layer"
+        ]
+    },
+    {
+        "name": "GlobalArm",
+        "tag": "a",
+        "names": [
+            "Type", "MirrorX", "Color", "", "Opacity", "Scale", "Rotation", "X", "Y", "Depth",
+            "Hand", "HandRotation", "Muscle"
+        ]
+    },
+    {
+        "name": "GlobalBelt",
+        "tag": "x",
+        "names": [
+            "Type", "MirrorX", "Color1", "Color2", "Color3", "", "ScaleX", "ScaleY",
+            "Outline", "OutlineColor", "Rotation", "X", "Y", "Depth", "Length", "Skew"
+        ]
+    },
+    {
+        "name": "GlobalDecoration",
+        "tag": "e",
+        "names": [
+            "Type", "MirrorX", "Color1", "Color2", "Color3", "", "", "", "Outline", "OutlineColor",
+            "Scale", "X", "Y", "Depth"
+        ]
+    },
+    {
+        "name": "GlobalFlag",
+        "tag": "y",
+        "names": [
+            "Type", "", "ScaleX", "ScaleY", "Rotation", "X", "Y", "Depth", "Shape", "Skew"
+        ]
+    },
+    {
+        "name": "GlobalHairpiece",
+        "tag": "w",
+        "names": [
+            "Type", "MirrorX", "Color1", "Color2", "Color3", "", "ScaleX", "Outline", "OutlineColor",
+            "Rotation", "X", "Y", "Depth", "Skew", "Shaded"
+        ]
+    },
+    {
+        "name": "GlobalImage",
+        "tag": "v",
+        "names": [
+            "ScaleX", "Layer", "Rotation", "OffsetX", "OffsetY", "ScaleY", "", "", "",
+            "RotationZ", "Opacity", "AnchorPoint", "Side"
+        ]
+    },
+    {
+        "name": "GlobalSpeech",
+        "tag": "z",
+        "names": [
+            "Type", "MirrorX", "Color1", "Color2", "Color3", "", "ScaleX", "ScaleY",
+            "Outline", "OutlineColor", "Rotation", "X", "Y", "Depth", "Opacity", "BlendMode", "Skew",
+            "ArrowVisible", "ArrowType", "ArrowSide", "ArrowOutline", "ArrowScaleX", "ArrowScaleY",
+            "ArrowRotation", "ArrowX", "ArrowY"
+        ]
+    },
+    {
+        "name": "Glove",
+        "tag": "",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Length"
+        ]
+    },
+    {
+        "name": "HairSide",
+        "tag": "ef",
+        "names": [
+            "Shape", "Layer", "Length", "Color1", "Color2", "Color3", "OffsetX", "Gravity"
+        ]
+    },
+    {
+        "name": "HairClip",
+        "tag": "n",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Side", "ScaleX", "Rotation", "OffsetX", "Height", "Outline", "OutlineColor",
+            "ScaleY", "RotationZ"
+        ]
+    },
+    {
+        "name": "HairPiece",
+        "tag": "m",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Side", "Layer", "ScaleX", "Rotation", "OffsetX", "Height", "Outline", "OutlineColor",
+            "ScaleY", "Skew", "Flipped", "DockPoint", "Shaded"
+        ]
+    },
+    {
+        "name": "HandProp",
+        "tag": "ab",
+        "names": ["Item", "Color1", "Color2", "Color3"]
+    },
+    {
+        "name": "Hat",
+        "tag": "la",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Side"
+        ]
+    },
+    {
+        "name": "Head",
+        "tag": "dd",
+        "names": [
+            "Cheeks", "Shape", "Width", "Length", "Scale", "Neck"
+        ]
+    },
+    {
+        "name": "HeadRotation",
+        "tag": "ba",
+        "names": ["Rotation"]
+    },
+    {
+        "name": "Headband",
+        "tag": "lc",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Layer"
+        ]
+    },
+    {
+        "name": "Horns",
+        "tag": "pc",
+        "names": [
+            "Shape", "Color1", "Color2", "Color3", "Layer", "Scale", "OffsetX"
+        ]
+    },
+    {
+        "name": "Image",
+        "tag": "f",
+        "names": [
+            "ScaleX", "Layer", "Rotation", "OffsetX", "OffsetY", "ScaleY", "", "", "",
+            "RotationZ", "Opacity", "AnchorPoint", "Side"
+        ]
+    },
+    {
+        "name": "Iris",
+        "tag": "fc",
+        "names": [
+            "RightShape", "RightColor", "RightWhites",
+            "LeftShape", "LeftColor", "LeftWhites",
+            "Width", "RightPupil", "LeftPupil", "Height", "OffsetX", "OffsetY"
+        ]
+    },
+    {
+        "name": "Jacket",
+        "tag": "ia",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "OpenState", "RightSleeve", "RightSleeveColor1", "RightSleeveColor2",
+            "LeftSleeve", "LeftSleeveColor1", "LeftSleeveColor2",
+            "Pocket", "PocketColor1", "PocketColor2", "PocketColor3", "PocketSide",
+            "LowPocket", "LowPocketColor1", "LowPocketColor2", "LowPocketColor3",
+            "LowPocketRotation"
+        ]
+    },
+    {
+        "name": "Leg",
+        "tag": "bb",
+        "names": ["Position"]
+    },
+    {
+        "name": "Look",
+        "tag": "hb",
+        "names": [
+            "LeftX", "CrossEyed", "LeftY", "LeftPupil",
+            "RightPupil", "RightX", "RightY"
+        ]
+    },
+    {
+        "name": "MainHair",
+        "tag": "ea",
+        "names": [
+            "Shape", "Color1", "Color2", "Color3"
+        ]
+    },
+    {
+        "name": "Massage",
+        "tag": "ad",
+        "names": [
+            "RightBreastY", "LeftBreastY", "RightBreastX", "LeftBreastX",
+            "RightNippleY", "LeftNippleY", "RightNippleX", "LeftNippleX",
+            "Crotch", "Kiss"
+        ]
+    },
+    {
+        "name": "Mouth",
+        "tag": "fe",
+        "names": [
+            "Width", "Height"
+        ]
+    },
+    {
+        "name": "Necklace",
+        "tag": "oe",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Layer"
+        ]
+    },
+    {
+        "name": "Nipples",
+        "tag": "dh",
+        "names": ["Color", "Size", "X", "Y", "Shape"]
+    },
+    {
+        "name": "Nose",
+        "tag": "fg",
+        "names": [
+            "Shape", "Height", "Color1", "Color2", "Color3", "Direction", "ScaleX", "ScaleY"
+        ]
+    },
+    {
+        "name": "NoseHilite",
+        "tag": "fi",
+        "names": ["Shape", "Opacity", "Height", "ScaleX", "Scaley"]
+    },
+    {
+        "name": "Pants",
+        "tag": "ie",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "RightLegLength", "RightLegColor1", "RightLegColor2", "RightLegColor3",
+            "LeftLegLength", "LeftLegColor1", "LeftLegColor2", "LeftLegColor3",
+            "Layer"
+        ]
+    },
+    {
+        "name": "PantyHose",
+        "tag": "jc",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Layer"
+        ]
+    },
+    {
+        "name": "Pasty",
+        "tag": "",
+        "names": ["Shape", "Color1", "Color2", "Scale", "Color3"]
+    },
+    {
+        "name": "Penis",
+        "tag": "qa",
+        "names": [
+            "Size", "ShaftColor", "HeadColor", "Scale", "Erection", "TipColor", "Layer", "",
+            "Erect", "Angle", "Foreskin"
+        ]
+    },
+    {
+        "name": "Placement",
+        "tag": "bc",
+        "names": ["X", "Y", "Z", "Height", "Shadow"]
+    },
+    {
+        "name": "PubicHair",
+        "tag": "eh",
+        "names": ["Shape", "Color", "Opacity"]
+    },
+    {
+        "name": "Pupil",
+        "tag": "fj",
+        "names": ["Highlight", "Side", "Rotation"]
+    },
+    {
+        "name": "Shadow",
+        "tag": "bf",
+        "names": [
+            "Color", "Inset", "Cutout", "Visible", "Opacity", "Thickness", "Spread"
+        ]
+    },
+    {
+        "name": "Shape",
+        "tag": "gf",
+        "names": ["Shape"]
+    },
+    {
+        "name": "Shirt",
+        "tag": "ib",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "BottomState", "TopState", "", "Chest",
+            "RightSleeve", "RightSleeveColor1", "RightSleeveColor2",
+            "LeftSleeve", "LeftSleeveColor1", "LeftSleeveColor2", "Length", "Pocket",
+            "PocketColor1", "PocketColor2", "PocketColor3", "PocketSide", "CollarStyle",
+            "CollarPattern", "LowPocket", "LowPocketColor1", "LowPocketColor2", "LowPocketColor3",
+            "LowPocketRotation"
+        ]
+    },
+    {
+        "name": "Shoe",
+        "tag": "",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Top", "TopColor1", "TopColor2", "TopColor3"
+        ]
+    },
+    {
+        "name": "Skin",
+        "tag": "da",
+        "names": ["Color", "", "", "Opacity"]
+    },
+    {
+        "name": "Skirt",
+        "tag": "ic",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Layer"
+        ]
+    },
+    {
+        "name": "SpecialEyes",
+        "tag": "gg",
+        "names": [
+            "Shape", "Color", "ScaleX", "OffsetX", "OffsetY", "Side"
+        ]
+    },
+    {
+        "name": "Stage",
+        "tag": "",
+        "names": ["Image", "Color1", "Color2", "Color3"]
+    },
+    {
+        "name": "Sweater",
+        "tag": "if",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Chest", "RightSleeve", "RightSleeveColor1", "RightSleeveColor2",
+            "LeftSleeve", "LeftSleeveColor1", "LeftSleeveColor2", "BottomState", "TopState",
+            "Length", "Pocket", "PocketColor1", "PocketColor2", "PocketColor3", "PocketSide",
+            "LowPocket", "LowPocketColor1", "LowPocketColor2", "LowPocketColor3",
+            "LowPocketRotation"
+        ]
+    },
+    {
+        "name": "Swimsuit",
+        "tag": "ka",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Piece"
+        ]
+    },
+    {
+        "name": "Tail",
+        "tag": "pe",
+        "names": [
+            "Shape", "Color1", "Color2", "Color3", "Side", "Scale"
+        ]
+    },
+    {
+        "name": "Tan",
+        "tag": "db",
+        "names": ["Shape", "Color"]
+    },
+    {
+        "name": "TextBox",
+        "tag": "u",
+        "names": [
+            "Color", "Scale", "X", "Y", "Height", "Width",
+            "Orientation", "Alignment", "Opacity", "ScaleX", "ScaleY", "Wrap",
+            "RotationZ", "Rotation", "AnchorPoint", "Depth"
+        ]
+    },
+    {
+        "name": "Tie",
+        "tag": "of",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Length"
+        ]
+    },
+    {
+        "name": "Toy",
+        "tag": "kg",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "Mode", "Speed", "Frame", "RandomMode", "RandomSpeed", "MoveBody",
+            "Scale", "Penetrate"
+        ]
+    },
+    {
+        "name": "Undershirt",
+        "tag": "id",
+        "names": [
+            "Type", "Color1", "Color2", "Color3",
+            "BottomState", "TopState", "Chest",
+            "RightSleeve", "RightSleeveColor1", "RightSleeveColor2",
+            "LeftSleeve", "LeftSleeveColor1", "LeftSleeveColor2",
+            "Length", "Pocket", "PocketColor1", "PocketColor2", "PocketColor3", "PocketSide",
+            "LowPocket", "LowPocketColor1", "LowPocketColor2", "LowPocketColor3",
+            "LowPocketRotation"
+        ]
+    },
+    {
+        "name": "Vagina",
+        "tag": "dc",
+        "names": [
+            "Juice", "Shape", "Color1", "Color2", "Color3", "Openness"
+        ]
+    },
+    {
+        "name": "Wings",
+        "tag": "pd",
+        "names": [
+            "Shape", "Color1", "Color2", "Color3", "", "", "ScaleX", "Side", "OffsetY"
+        ]
+    },
+    {
+        "name": "NULL",
+        "tag": "",
+        "names": []
+    }
+]
