@@ -405,14 +405,15 @@ class KisekaeLocalClient(object):
 
     @classmethod
     async def connect(
-        cls, max_tries: int = -1, loop: Optional[asyncio.AbstractEventLoop] = None
-    ):
+        cls, max_tries: int = -1, loop: Optional[asyncio.AbstractEventLoop] = None,
+        host: str = '127.0.0.1', port: int = 8008
+    ): # I added host and port arguments in case needs to be changed
         cur_tries = 0
 
         while (max_tries == -1) or (cur_tries < max_tries):
             try:
                 reader, writer = await asyncio.open_connection(
-                    "127.0.0.1", 8008, loop=loop
+                    host, port, loop=loop
                 )
             except OSError:
                 await asyncio.sleep(5)

@@ -1,3 +1,10 @@
+'''
+kisekauto/types/subcodes.py
+c Yaakov Schectman 2022
+
+Defines subcodes that make up KisekaeII codes
+'''
+
 import typing, json, os
 
 from . import GetterMeta, Consts
@@ -5,6 +12,10 @@ from . import GetterMeta, Consts
 class SubcodeType(metaclass = GetterMeta):
     '''
     A Kisekae subcode specification
+    
+    name: the name of this object
+    tag: what is used to identify this subcode in a code
+    names: the name for each element within the subcode
     '''
     def __init__(self, name: str, tag: str, names: typing.List[str],
             poses: typing.Optional[typing.List[str]] = None,
@@ -77,6 +88,9 @@ class Subcode:
         self.tag: str = tag if tag is not None else subcode_type.tag
     
     def getPrefix(self) -> str:
+        '''
+        Format the prefix to include the index if necessary, with the proper number of digits
+        '''
         return self.tag +\
             (('{:01}' if self.tag in Consts.singleDigits else '{:02}').format(self.index) if self.index >= 0\
             else '')
@@ -138,18 +152,35 @@ class Subcode:
     def __len__(self) -> int:
         return 0 if (len(self.pieces) > 1 and self.pieces[0] == '') else len(self.pieces)
     
-    def clear(self) -> None:
+    def clear(self) -> 'Subcode':
+        '''
+        Remove all data from this subcode
+        
+        returns self
+        '''
         self.pieces = []
+        return self
     
-    def set(self, data: str) -> None:
+    def set(self, data: str) -> 'Subcode':
+        '''
+        Populate this subcode with the data in the provided string data
+        
+        returns self
+        '''
         self.pieces = data.split('.')
+        return self
     
-    def merge(self, other: 'Subcode', mode: str = 'all') -> None:
+    def merge(self, other: 'Subcode', mode: str = 'all') -> 'Subcode':
+        '''
+        Merge another subcode into this one
+        
+        returns self
+        '''
         if self.subcode_type is not other.subcode_type:
             raise ValueError('Subcode Types do not match!')
         if mode == 'all' and len(other) == 0:
             self.pieces = []
-            return
+            return self
         modes = mode.split('.')
         for i, other_code in enumerate(other.pieces):
             name = self.subcode_type[i]
@@ -161,12 +192,19 @@ class Subcode:
                 ('body' in modes and name in self.subcode_type.body)
             if override:
                 self.pieces[i] = other_code
+        return self
     
     def copy(self) -> 'Subcode':
+        '''
+        Returns a copy of this subcode with identical contents
+        '''
         return Subcode(self.subcode_type, list(self.pieces), self.index, self.tag)
     
     @staticmethod
     def fromString(src: str) -> typing.Optional['Subcode']:
+        '''
+        Parse the provided string src into a subcode
+        '''
         try:
             components
         except NameError:

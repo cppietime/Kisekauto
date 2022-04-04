@@ -1,3 +1,10 @@
+'''
+kisekauto/mixer.py
+c Yaakov Schectman 2022
+
+Utility for mix-and-matching many codes
+'''
+
 from typing import List, Tuple, Any, Dict, Union, Set, Optional
 from dataclasses import dataclass, field
 from os import path
@@ -11,6 +18,14 @@ _empty_list_factory = lambda: []
 
 @dataclass
 class Source:
+    '''
+    A source specifying
+    source: whether internal(preset) or external(custom)
+    name: what to name files generated with this source
+    path: a path to the file, or pattern to match
+    blacklist: tags to avoid mixing with this source
+    tags: tags defining this source
+    '''
     source: str = ''
     name: str = ''
     path: str = ''
@@ -40,6 +55,10 @@ class Source:
 
 @dataclass
 class Option:
+    '''
+    A choosable option. Unless blacklists proclude it, one source from each option will be
+    chosen for each code
+    '''
     name: str = ''
     sources: List[Source] = field(default_factory = _empty_list_factory)
     
@@ -53,6 +72,9 @@ class Option:
 
 @dataclass
 class MixerProgram:
+    '''
+    The mixer containing all associated options
+    '''
     destdir: str
     options: List[Option]
     
@@ -85,7 +107,8 @@ class MixerProgram:
                     total[name] = src_code
         return total
     
-    def enumerate_codes(self):
+    def enumerate_codes(self) -> Dict[str, Code]:
+        '''Return a dictionary with keys of concatenated source names mapped to their code values'''
         d: Dict = self._enumerate_codes(0, set(), set())
         return dict(map(lambda x: (path.join(self.destdir, x[0]), x[1]), d.items()))
 
@@ -111,6 +134,7 @@ def _decode_pairs(pairs: List[Tuple]) -> Any:
     return d
 
 def load(source: Union[str, io.IOBase]) -> MixerProgram:
+    '''Load a mixer program from a filepath or IO object'''
     if isinstance(source, str):
         with open(source) as file:
             mixer: Dict = json.load(file, object_pairs_hook = _decode_pairs)
@@ -119,6 +143,7 @@ def load(source: Union[str, io.IOBase]) -> MixerProgram:
     return MixerProgram(**mixer)
 
 def loads(source: str) -> MixerProgram:
+    '''Load a mixer program from a JSON string'''
     mixer: Dict = json.loads(source, object_pairs_hook = _decode_pairs)
     return MixerProgram(**mixer)
 

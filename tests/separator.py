@@ -1,3 +1,10 @@
+'''
+kisekauto/separator.py
+c Yaakov Schectman 2022
+
+A utility to split codes into components
+'''
+
 import argparse
 import sys
 from os import path
@@ -5,10 +12,21 @@ from os import path
 from kisekauto import imagegen
 
 def main(argv):
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--save', nargs='*')
-    parser.add_argument('-o', '--outputdir', action='store', nargs='?')
-    parser.add_argument('-i', '--inputdir', required=True)
+    parser = argparse.ArgumentParser(description='A utility to split codes into components')
+    parser.add_argument('-s', '--save', nargs='*', help=
+        '''A list of specifiers with characters specifying the components to extract,
+        optionally followed by a colon and a name to append to the result.
+        c - clothes
+        u - underwear
+        b - body
+        f - face
+        h - hair
+        d - decorations
+        e - expression
+        p - pose''')
+    parser.add_argument('-o', '--outputdir', action='store', nargs='?', help=
+        'A prefix path for the output files. End with a / for a directory''')
+    parser.add_argument('-i', '--inputdir', required=True, help='The path to the input code file''')
     args = parser.parse_args(argv)
     specfilepath = args.inputdir
     code = imagegen.custom_codes(specfilepath)

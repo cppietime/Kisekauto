@@ -1,3 +1,10 @@
+'''
+kisekauto/types/chunk.py
+c Yaakov Schectman 2022
+
+Defines data classes for KisekaeII code chunks, and codes as a whole
+'''
+
 import typing
 
 from . import subcodes, components, Consts
@@ -5,13 +12,23 @@ from . import subcodes, components, Consts
 class Chunk:
     '''
     A chunk of data within a code; delimited with asterisks
-    Represents one model or scene
+    Represents one model or scene, so up to 10 chunks can be in one code
+    "/#]" separates the components/subcodes of a chunk from its assets, if there are any assets
+    This module does not support assets in any meaningful way
+    
+    data: the string from which to parse this chunk. The empty string by default
     '''
     def __init__(self, data: str = '') -> None:
         self.components: typing.Dict[components.ComponentType, components.Component] = {}
         self.parse(data)
     
-    def parse(self, data: str) -> None:
+    def parse(self, data: str) -> 'Chunk':
+        '''
+        Parse a string containing a KisekaeII code to populate this chunk
+        
+        data: the string from which to parse the chunk
+        returns self
+        '''
         pieces: typing.List[str] = data.split(Consts.assetDelim)
         self.assets: typing.List[str] = pieces[1:]
         srcs: typing.List[str] = filter(lambda x: x != '', pieces[0].split('_'))
@@ -21,6 +38,7 @@ class Chunk:
             if ctype not in self.components:
                 self.components[ctype] = components.Component(ctype)
             self.components[ctype].add(src)
+        return self
     
     def __str__(self) -> str:
         base: str = '_'.join(map(str, self.components.values()))
@@ -41,7 +59,14 @@ class Chunk:
             ctype = key
         return ctype in self.components
     
-    def merge(self, other: 'Chunk', mode: str = 'all') -> None:
+    def merge(self, other: 'Chunk', mode: str = 'all') -> 'Chunk':
+        '''
+        Merge attributes of another chunk into this one
+        
+        other: A chunk containing other attributes to merge into this one
+        mode: Not really implemented right now
+        returns self
+        '''
         self.assets = list(other.assets)
         for ctype, component in other.components.items():
             if ctype not in self.components:
@@ -49,12 +74,24 @@ class Chunk:
             self.components[ctype].merge(component, mode)
     
     def copy(self) -> 'Chunk':
+        '''
+        Returns a copy of this chunk, so you can modify the copy while preserving the original
+        '''
         new: 'Chunk' = Chunk()
         new.assets = list(self.assets)
         new.components = dict(map(lambda x: (x[0], x[1].copy()), self.components.items()))
         return new
     
-    def filter(self, cnames: typing.Iterable[str], skeys: typing.Iterable[str]) -> None:
+    def filter(self, cnames: typing.Iterable[str], skeys: typing.Iterable[str]) -> 'Chunk':
+        '''
+        Remove any components not in cnames, if cnames is not empty, then, for each component
+        that remains, if skeys contains any subcodes for that component, retain only those
+        subcodes
+        
+        cnames: Names of components to retain, or empty to only filter subcodes
+        skeys: Keys of subcodes to retain, or empty to only filter components
+        returns self
+        '''
         if len(cnames) > 0:
             self.components = dict(filter(lambda x: x[0].name in cnames, self.components.items()))
         for component in self.components.values():
@@ -62,17 +99,30 @@ class Chunk:
                 set(skeys).intersection(component.spec.arrays.keys()))
             if len(subs) > 0:
                 component.filter(subs)
+        return self
 
 class Code:
+    '''
+    The entire KisekaeII import/export code
+    "#/]" separates the models from the scene
+    
+    data: The string source from which to parse this code. The empty string by default
+    '''
     def __init__(self, data: str = '') -> None:
         self.models: typing.List[typing.Optional[Chunk]] = [None] * 9
         self.scene: typing.Optinal[Chunk] = None
         self.version: int = -1
         self.parse(data)
     
-    def parse(self, data: str) -> None:
+    def parse(self, data: str) -> 'Code':
+        '''
+        Parse a code string to populate this code
+        
+        data: String containing the string representation of the code
+        returns self
+        '''
         if data == '':
-            return
+            return self
         version_rest = data.split('**')[:2]
         if len(version_rest) == 1:
             self.version = 68
@@ -91,9 +141,10 @@ class Code:
         if len(model_scene) > 1:
             scene = model_scene[1]
             self.scene = Chunk(scene)
+        return self
     
     @staticmethod
-    def convertShoe(shoe: subcodes.Subcode) -> None:
+    def _convertShoe(shoe: subcodes.Subcode) -> None:
         shoeRemap: typing.Dict[str, typing.Tuple] = {
             '0' : (None,    '1',    'Color2',   None,       'Color1'),
             '1' : (None,    '2',    'Color2',   None,       'Color3'),
@@ -119,9 +170,16 @@ class Code:
             shoe.TopColor2 = topColor2
             shoe.Color2 = color2
     
-    def convertVer(self, new: int) -> None:
+    def convertVer(self, new: int) -> 'Code':
+        '''
+        Converts the version of this code to the one specified IN-PLACE (not a copy)
+        This will usually do nothing more than change a number value, but may reset some attributes
+        
+        new: new version to which to convert
+        returns self
+        '''
         if self.version >= 83 or new < 83:
-            return
+            return self
         for model in self.models:
             if model is not None:
                 if components.ComponentType.Expression in model:
@@ -132,9 +190,10 @@ class Code:
                 clothes: components.Component = model.Clothing
                 if components.ComponentType.Clothing in model:
                     clothes: components.Component = model.Clothing
-                    Code.convertShoe(clothes.jd)
-                    Code.convertShoe(clothes.je)
+                    Code._convertShoe(clothes.jd)
+                    Code._convertShoe(clothes.je)
         self.version = new
+        return self
     
     def __str__(self) -> str:
         string = str(self.version) + '**'
@@ -152,6 +211,9 @@ class Code:
         return string
     
     def copy(self) -> 'Code':
+        '''
+        Returns a copy of this code so you can modify the copy and preserve this original
+        '''
         scene: typing.Optional[Chunk] = None if self.scene is None else self.scene.copy()
         models: typing.List[typing.Optional[Chunk]] =\
             [None if x is None else x.copy() for x in self.models]
@@ -162,6 +224,14 @@ class Code:
         return new
     
     def fastloadList(self, character: int = 0) -> typing.List[typing.List]:
+        '''
+        Get a list of attributes for fast-loading for a particular character
+        
+        character: 0-index of character to get the list of
+        returns a list of attributes in the form [ [prefix, position, value], ... ]
+        Where prefix is the prefix or tag of the subcode (e.g. aa, r0), position is the 0-indexed
+        position of the piece being specified within the subcode, and value is its value
+        '''
         lst: typing.List[typing.List] = []
         model: Chunk = self.models[character]
         if model is not None:
@@ -174,7 +244,13 @@ class Code:
                         enumerate(filter(lambda y: y != '', subcode.pieces))))
         return lst
     
-    def merge(self, other: 'Code') -> None:
+    def merge(self, other: 'Code') -> 'Code':
+        '''
+        Merge the attributes of another code into this one
+        
+        other: Other code to merge with this
+        returns self
+        '''
         if self.version > other.version:
             other = other.copy()
             other.convertVer(self.version)
@@ -191,6 +267,14 @@ class Code:
                 self.models[i].merge(there)
     
     def filter(self, keys: typing.Iterable[str]) -> 'Code':
+        '''
+        If any component names are present in keys, only those components are retained.
+        If any subcode tags are present in keys, for each component that contains that subcode,
+        only those subcodes are retaind.
+        
+        keys: Collection of keys to retain
+        returns self
+        '''
         component_names: typing.List[str] = []
         subcode_keys: typing.List[str] = []
         for key in keys:

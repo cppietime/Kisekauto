@@ -1,3 +1,10 @@
+'''
+kisekauto/types/components.py
+c Yaakov Schectman 2022
+
+Defines the components and their specs for KisekaeII codes
+'''
+
 import typing, json, os
 from . import GetterMeta, subcodes, Consts
 
@@ -5,7 +12,11 @@ list_t = typing.Dict[str, typing.Tuple[str, subcodes.SubcodeType]]
 
 class ComponentType(metaclass = GetterMeta):
     '''
-    A component containing subcodes
+    The specification for a component that contains subcodes of a common category
+    
+    name: Name used for access and filtering
+    singles: A list of subcode types of which this component contains one each
+    arrays: A list of subcode types of which this component may contain any number
     '''
     def __init__(self, name: str,\
             singles: list_t,\
@@ -32,6 +43,9 @@ class ComponentType(metaclass = GetterMeta):
     
     @staticmethod
     def fromDict(src: typing.Dict[str, typing.Any]) -> 'ComponentType':
+        '''
+        Convert a dictionary read from the JSON specifiers into a component type
+        '''
         transform = lambda x: (x[0], (x[1][0], subcodes.SubcodeType.classGet(x[1][1])))
         name: str = src['name']
         singles_src: typing.Dict[str, typing.Any] = src['singles']
@@ -48,11 +62,17 @@ class ComponentType(metaclass = GetterMeta):
     
     @staticmethod
     def isComponent(key: str) -> bool:
+        '''
+        Returns True iff key is the name of a recognized component
+        '''
         return key in _components_by_id
 
 class Component:
     '''
     An instance of a component
+    
+    spec: the type of this component
+    data: the string representation from which to parse the component
     '''
     def __init__(self, spec: ComponentType, data: str = '') -> None:
         self.spec: ComponentType = spec
@@ -80,7 +100,13 @@ class Component:
     def __str__(self) -> str:
         return '_'.join(map(str, self.subcodes.values()))
     
-    def add(self, data: typing.Union[str, subcodes.Subcode]) -> None:
+    def add(self, data: typing.Union[str, subcodes.Subcode]) -> 'Component':
+        '''
+        Add a subcode to this component
+        
+        data: either the string representation of a subcode, or a subcode object
+        returns self
+        '''
         if isinstance(data, str):
             subcode: subcodes.Subcode = subcodes.Subcode.fromString(data)
         else:
@@ -89,8 +115,16 @@ class Component:
         if subcode.index != -1:
             key += ('{:01}' if subcode.tag in Consts.singleDigits else '{:02}').format(subcode.index)
         self.subcodes[key] = subcode
+        return self
     
-    def merge(self, other: 'Component', mode: str = 'all') -> None:
+    def merge(self, other: 'Component', mode: str = 'all') -> 'Component':
+        '''
+        Merge another component into this one IN-PLACE
+        
+        other: Other component to merge into this one
+        mode: don't use it
+        returns self
+        '''
         for key, subcode in other.subcodes.items():
             if key not in self.subcodes:
                 self.subcodes[key] = subcode
@@ -98,18 +132,25 @@ class Component:
                 self.subcodes[key].merge(subcode, mode)
     
     def copy(self) -> 'Component':
+        '''
+        Returns a new component with identical contents to this one
+        '''
         new: 'Component' = Component(self.spec)
         new.subcodes = dict(map(lambda x: (x[0], x[1].copy()), self.subcodes.items()))
         return new
     
-    def filter(self, skeys: typing.Iterable[str]) -> None:
+    def filter(self, skeys: typing.Iterable[str]) -> 'Component':
+        '''
+        Filter this component as described in Chunk.filter
+        '''
         if len(skeys) == 0:
-            return
+            return self
         self.subcodes = dict(filter(lambda x:\
                 x[1].tag in skeys or\
                 x[0] in skeys or\
                 self.spec[x[1].tag][1] in skeys,\
             self.subcodes.items()))
+        return self
 
 with open(os.path.join(os.path.dirname(__file__), 'components.json')) as src:
     _components_src: typing.List[typing.Dict] = json.load(src)
