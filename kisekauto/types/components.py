@@ -24,6 +24,9 @@ class ComponentType(metaclass = GetterMeta):
             typing.Tuple[bool, typing.Optional[str], subcodes.SubcodeType]:
         return self[key]
     
+    def __contains__(self, key: str) -> bool:
+        return key in self.singles or key in self.arrays
+    
     def __str__(self) -> str:
         return f'<Component({self.name})>'
     
@@ -42,6 +45,10 @@ class ComponentType(metaclass = GetterMeta):
         if key in _components_by_id:
             return _components_by_id[key]
         return _components_by_prefix[key]
+    
+    @staticmethod
+    def isComponent(key: str) -> bool:
+        return key in _components_by_id
 
 class Component:
     '''
@@ -94,6 +101,15 @@ class Component:
         new: 'Component' = Component(self.spec)
         new.subcodes = dict(map(lambda x: (x[0], x[1].copy()), self.subcodes.items()))
         return new
+    
+    def filter(self, skeys: typing.Iterable[str]) -> None:
+        if len(skeys) == 0:
+            return
+        self.subcodes = dict(filter(lambda x:\
+                x[1].tag in skeys or\
+                x[0] in skeys or\
+                self.spec[x[1].tag][1] in skeys,\
+            self.subcodes.items()))
 
 with open(os.path.join(os.path.dirname(__file__), 'components.json')) as src:
     _components_src: typing.List[typing.Dict] = json.load(src)

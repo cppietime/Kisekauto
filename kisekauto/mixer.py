@@ -18,19 +18,25 @@ class Source:
     whitelist: Set[str] = field(default_factory = _empty_list_factory)
     tags: Set[str] = field(default_factory = _empty_list_factory)
     
-    code: Code = field(init = False)
+    __codes: Optional[List[Code]] = field(init = False, default = None)
     
     def __post_init__(self) -> None:
         self.blacklist = set(self.blacklist)
         self.whitelist = set(self.whitelist)
         self.tags = set(self.tags)
-        self.code = self.load()
     
-    def load(self) -> Code:
-        # if self.source == 'internal':
-            # return imagegen.preset_code(self.path)
-        # return imagegen.custom_code(self.path)
-        return Code()
+    def _load(self) -> None:
+        codes = []
+        if self.source == 'internal':
+            codes += imagegen.preset_code(self.path)
+        else:
+            codes += (imagegen.custom_codes(self.path))
+        self.__codes = codes
+    
+    def codes(self) -> List[Code]:
+        if self.__codes is None:
+            self._load()
+        return self.__codes
 
 @dataclass
 class Option:
@@ -42,8 +48,8 @@ class Option:
     def __post_init__(self) -> None:
         self.codes = self._enumerate_codes()
     
-    def _enumerate_codes(self) -> Dict[str, Code]:
-        return dict(map(lambda x: (x.name, x.load()), self.sources))
+    def _enumerate_codes(self) -> Dict[str, List[Code]]:
+        return dict(map(lambda x: (x.name, x.codes()), self.sources))
 
 @dataclass
 class MixerProgram:
@@ -62,13 +68,21 @@ class MixerProgram:
                 blacklist_new: Set = blacklist.union(source.blacklist)
                 tags_new: Set = tags.union(source.tags)
                 ext: Dict = (self._enumerate_codes(index + 1, tags_new, blacklist_new))
-                for ext_name, ext_code in ext.items():
-                    name: str = source.name + '_' + ext_name
-                    code: Code = source.code.copy()
-                    code.merge(ext_code)
-                    total[name] = code
+                for sci, src_code in enumerate(source.codes()):
+                    basename: str = source.name
+                    if len(source.codes()) > 1:
+                        basename += str(sci)
+                    for ext_name, ext_code in ext.items():
+                        name: str = basename + '_' + ext_name
+                        code: Code = src_code.copy()
+                        code.merge(ext_code)
+                        total[name] = code
             else:
-                total[source.name] = source.code
+                for sci, src_code in enumerate(source.codes()):
+                    name: str = source.name
+                    if len(source.codes()) > 1:
+                        name += sci
+                    total[name] = src_code
         return total
     
     def enumerate_codes(self):
@@ -89,7 +103,7 @@ def _decode_pair(pair: Tuple) -> Tuple:
                 typ: type = _singletons[pair[0]]
                 return (pair[0], typ(**pair[1]))
     except TypeError as e:
-        pass
+        print(e)
     return pair
 
 def _decode_pairs(pairs: List[Tuple]) -> Any:

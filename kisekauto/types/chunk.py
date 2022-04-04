@@ -53,6 +53,15 @@ class Chunk:
         new.assets = list(self.assets)
         new.components = dict(map(lambda x: (x[0], x[1].copy()), self.components.items()))
         return new
+    
+    def filter(self, cnames: typing.Iterable[str], skeys: typing.Iterable[str]) -> None:
+        if len(cnames) > 0:
+            self.components = dict(filter(lambda x: x[0].name in cnames, self.components.items()))
+        for component in self.components.values():
+            subs = set(skeys).intersection(component.spec.singles.keys()).union(\
+                set(skeys).intersection(component.spec.arrays.keys()))
+            if len(subs) > 0:
+                component.filter(subs)
 
 class Code:
     def __init__(self, data: str = '') -> None:
@@ -180,3 +189,17 @@ class Code:
                 if here is None:
                     self.models[i] = Chunk()
                 self.models[i].merge(there)
+    
+    def filter(self, keys: typing.Iterable[str]) -> 'Code':
+        component_names: typing.List[str] = []
+        subcode_keys: typing.List[str] = []
+        for key in keys:
+            if components.ComponentType.isComponent(key):
+                component_names.append(key)
+            else:
+                subcode_keys.append(key)
+        for chunk in (self.scene, *self.models):
+            if chunk is None:
+                continue
+            chunk.filter(component_names, subcode_keys)
+        return self

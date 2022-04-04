@@ -204,7 +204,7 @@ class KisekaeServerRequest(object):
                 "bg": include_bg,
                 "shift": shift,
                 "size": size,
-                "sf": sf,
+                "scale": sf, # Had to change this
                 "fastEncode": fast_encode,
             },
         )
