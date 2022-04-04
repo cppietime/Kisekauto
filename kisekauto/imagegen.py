@@ -8,6 +8,8 @@ from os import path
 from .kkl_client import KisekaeLocalClient, KisekaeServerRequest, KisekaeServerResponse
 from .types.chunk import Code
 
+_config_internal_path = path.join(path.dirname(__file__), 'bank')
+
 class KisekautoClient(KisekaeLocalClient):
     def __init__(
         self,
@@ -118,8 +120,11 @@ def custom_code(source: Union[str, io.IOBase]) -> Code:
 def custom_codes(filename: str) -> List[Code]:
     return _glob_codes(filename)
 
+def config_preset_path(preset_path: str) -> None:
+    _config_internal_path = preset_path
+
 def preset_code(name: str) -> List[Code]:
-    filename: str = path.join(path.dirname(__file__), 'bank', name)
+    filename: str = path.join(_config_internal_path, name)
     return _glob_codes(filename)
 
 def body_code(name: str) -> List[Code]:
