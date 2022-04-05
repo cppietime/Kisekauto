@@ -66,6 +66,10 @@ class ComponentType(metaclass = GetterMeta):
         Returns True iff key is the name of a recognized component
         '''
         return key in _components_by_id
+    
+    @staticmethod
+    def componentTypes() -> typing.List['ComponentType']:
+        return _components
 
 class Component:
     '''
@@ -150,6 +154,22 @@ class Component:
                 x[0] in skeys or\
                 self.spec[x[1].tag][1] in skeys,\
             self.subcodes.items()))
+        return self
+    
+    def exclude(self) -> 'Component':
+        '''Voids absent subcodes'''
+        absent = set()
+        for tag, subcodeType in self.spec.singles.items():
+            if tag not in self.subcodes:
+                absent.add(tag)
+                self.subcodes[tag] = subcodes.Subcode(subcodeType[1], tag = tag)
+        for tag, subcodeType in self.spec.arrays.items():
+            max_index: int = 9 if tag in Consts.singleDigits else 99
+            for i in range(0, max_index):
+                prefix: str = ('{:01}' if tag in Consts.singleDigits else '{:02}').format(max_index)
+                if prefix not in self.subcodes:
+                    self.subcodes[prefix] = subcodes.Subcode(subcodeType[1], tag = tag, index = i)
+                    break
         return self
 
 with open(os.path.join(os.path.dirname(__file__), 'components.json')) as src:

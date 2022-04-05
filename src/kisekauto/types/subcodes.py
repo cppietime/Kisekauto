@@ -182,6 +182,7 @@ class Subcode:
             self.pieces = []
             return self
         modes = mode.split('.')
+        self.pieces += [''] * max(0, len(other.pieces) - len(self.pieces))
         for i, other_code in enumerate(other.pieces):
             name = self.subcode_type[i]
             override = (mode == 'all') or\

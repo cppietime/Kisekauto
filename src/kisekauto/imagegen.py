@@ -10,7 +10,7 @@ import io
 import sys
 import glob
 from typing import Tuple, Optional, Union, List, Iterable
-from os import path
+from os import path, walk
 
 from .kkl_client import KisekaeLocalClient, KisekaeServerRequest, KisekaeServerResponse
 from .types.chunk import Code
@@ -95,19 +95,24 @@ class KisekautoClient(KisekaeLocalClient):
             return True
         return False
     
-    async def apply_to_character(self, code: Code, target: int, source: int = 0) -> bool:
+    async def apply_to_character(self, code: Code, target: int,\
+            source: int = 0, empties: bool = False, read_from_cache: bool = True) -> bool:
         '''
         Apply a fast-loaded list from a code to a single character
         
         code: Code to apply
         target: 0-index of character to update
         source: 0-index of character to take the code from, 0 by default
+        empties: whether to force empty elements
         
         returns True on success
+        
+        Don't use this one if you can afford the speed. It doesn't seem to work consistently
         '''
-        data: List = code.fastloadList(source)
+        data: List = code.fastloadList(source, empties = empties)
         request: KisekaeServerRequest =\
-            KisekaeServerRequest.fastload(target, data, version = code.version)
+            KisekaeServerRequest.fastload(target, data, version = code.version,\
+            read_from_cache = read_from_cache)
         response: KisekaeServerResponse = await self.send_command(request)
         return check_response(response, 'Failed to apply code on character')
     
@@ -151,7 +156,7 @@ async def default_client(tries: int = 5) -> KisekautoClient:
 
 def check_response(response: KisekaeServerResponse, message: str) -> bool:
     if not response.is_success():
-        print(message, ':', response.get_reasion(), file=sys.stderr)
+        print(message, ':', response.get_reason(), file=sys.stderr)
         return False
     return True
 
@@ -226,3 +231,60 @@ def list_internal_codes(category: str) -> List[str]:
     '''
     pathname:str = path.join(_config_internal_path, category, '*')
     return glob.glob(pathname)
+
+async def render_all(pattern: Union[str, Iterable[str]], outputdir: str = '.',\
+        full: bool = False, **options) -> bool:
+    client: KisekautoClient = await KisekautoClient.connect()
+    print('Connected to client!')
+    success: bool = True
+    if isinstance(pattern, str):
+        pattern = [pattern]
+    for pat in pattern:
+        for filename in glob.glob(pat):
+        # codes: List[Code] = custom_codes(pat)
+        # for i, code in enumerate(codes):
+            with open(filename) as file:
+                code: Code = custom_code(file)
+            destdir: str = path.join(outputdir, path.splitext(path.basename(filename))[0] + '.png')
+            print(f'Rendering {destdir}...')
+            await client.apply_code(code)
+            if full:
+                success &= await client.save_image_to(destdir, **options)
+            else:
+                success &= await client.capture_character(destdir, 0, **options)
+    await client.close()
+    return success
+
+def main(argv: Iterable[str]) -> None:
+    import argparse
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(description=
+        'A utility for rendering batches of codes to images')
+    parser.add_argument('-i', '--input', nargs='*', help='Any number of file patterns to match')
+    parser.add_argument('-o', '--outputdir', default='.', help='A base directory for output files')
+    parser.add_argument('-f', '--full', action='store_true', help=
+        'Save entire screen instead of just one character')
+    parser.add_argument('-q', '--fast', action='store_true', help=
+        'Produce image faster, but larger')
+    parser.add_argument('-b', '--background', action='store_true', help=
+        'Render background. Full only')
+    parser.add_argument('-x', '--scale', type=int, help='Scale factor for rendering')
+    parser.add_argument('-s', '--size', type=int, nargs=2, help='Size in pixels. Full only')
+    parser.add_argument('-c', '--center', type=int, nargs=2, help=
+        'Center of image in pixels. Full only')
+    parser.add_argument('-l', '--list', action='store_true', help='List all presets')
+    args = parser.parse_args(argv)
+    if args.list:
+        for root, folders, files in walk(_config_internal_path):
+            for file in files:
+                if file.endswith('.kkl'):
+                    fullpath = path.join(root, file)
+                    print(path.relpath(fullpath, _config_internal_path))
+    opts = {'scale': args.scale, 'fast': args.fast}
+    if args.full:
+        opts.update({'bg': args.background, 'size': args.size, 'center': args.center})
+    if args.input is not None:
+        asyncio.run(render_all(args.input, args.outputdir, args.full, **opts))
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
+    

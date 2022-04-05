@@ -5,13 +5,13 @@ c Yaakov Schectman 2022
 A utility to split codes into components
 '''
 
-import argparse
 import sys
 from os import path
 
 from kisekauto import imagegen
 
 def main(argv):
+    import argparse
     parser = argparse.ArgumentParser(description='A utility to split codes into components')
     parser.add_argument('-s', '--save', nargs='*', help=
         '''A list of specifiers with characters specifying the components to extract,

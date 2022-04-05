@@ -41,7 +41,7 @@ class Chunk:
         return self
     
     def __str__(self) -> str:
-        base: str = '_'.join(map(str, self.components.values()))
+        base: str = '_'.join(filter(lambda x: x!='', map(str, self.components.values())))
         if self.assets != []:
             base += Consts.assetDelim + Consts.assetDelim.join(self.assets)
         return base
@@ -100,6 +100,15 @@ class Chunk:
             if len(subs) > 0:
                 component.filter(subs)
         return self
+    
+    def exclude(self) -> 'Chunk':
+        '''Voids absent subcodes'''
+        for componentType in components.ComponentType.componentTypes():
+            # if componentType not in self.components:
+                # self.components[componentType] = components.Component(componentType)
+            if componentType in self.components:
+                self.components[componentType].exclude()
+            
 
 class Code:
     '''
@@ -223,25 +232,47 @@ class Code:
         new.version = self.version
         return new
     
-    def fastloadList(self, character: int = 0) -> typing.List[typing.List]:
+    def fastloadList(self, character: int = 0, empties: bool = False) -> typing.List[typing.List]:
         '''
         Get a list of attributes for fast-loading for a particular character
         
         character: 0-index of character to get the list of
+        empties: whether to include empty attributes
         returns a list of attributes in the form [ [prefix, position, value], ... ]
         Where prefix is the prefix or tag of the subcode (e.g. aa, r0), position is the 0-indexed
         position of the piece being specified within the subcode, and value is its value
+        
+        Yeah just don't use this
         '''
-        lst: typing.List[typing.List] = []
         model: Chunk = self.models[character]
+        lst: typing.List[typing.List] = []
         if model is not None:
             for component in model.components.values():
                 for subcode in component.subcodes.values():
                     if len(subcode) == 0:
-                        continue
-                    lst += list(map(\
-                        lambda x: (subcode.getPrefix(), x[0], x[1]),\
-                        enumerate(filter(lambda y: y != '', subcode.pieces))))
+                        lst += [(subcode.getPrefix(), i, '') for i in\
+                            range(len(subcode.subcode_type.names))]
+                    else:
+                        lst += list(map(\
+                            lambda x: (subcode.getPrefix(), x[0], x[1]),\
+                            enumerate(filter(lambda y: empties or y != '', subcode.pieces))))
+        # string: str = str(model).split(Consts.assetDelim)[0]
+        # subcodes: typing.List[str] = string.split('_')
+        # for subcode in subcodes:
+            # tag: str = subcode[0]
+            # if subcode[1].isdigit():
+                # if tag == 'u':
+                    # tag += subcode[1]
+                    # rest: str = subcode[2:]
+                # else:
+                    # tag += subcode[1:3]
+                    # rest: str = subcode[3:]
+            # else:
+                # tag += subcode[1]
+                # rest: str = subcode[2:]
+            # pieces: List[str] = rest.split('.')
+            # for i, piece in enumerate(pieces):
+                # lst.append((tag, i, piece))
         return lst
     
     def merge(self, other: 'Code') -> 'Code':
@@ -286,4 +317,13 @@ class Code:
             if chunk is None:
                 continue
             chunk.filter(component_names, subcode_keys)
+        return self
+    
+    def exclude(self) -> 'Code':
+        '''Voids absent subcodes'''
+        # if self.scene is None:
+            # self.scene = Chunk('')
+        for model in self.models:
+            if model is not None:
+                model.exclude()
         return self

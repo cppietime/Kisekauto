@@ -7,9 +7,11 @@ Utility for mix-and-matching many codes
 
 from typing import List, Tuple, Any, Dict, Union, Set, Optional
 from dataclasses import dataclass, field
-from os import path
+from os import path, walk
+import asyncio
 import json
 import io
+import sys
 
 from . import imagegen
 from .types.chunk import Code
@@ -79,17 +81,24 @@ class MixerProgram:
     options: List[Option]
     
     def _enumerate_codes(self, index: int, tags: Set[str],\
-            blacklist: Set[str]) -> Dict:
+            blacklist: Set[str], whitelist: Set[str]) -> Dict:
         option: Option = self.options[index]
         total: Dict = {}
         for source in option.sources:
             if source.tags.intersection(blacklist) != set() or\
                     source.blacklist.intersection(tags) != set():
                 continue
+            whitelist_new: Set = whitelist.union(source.whitelist)
+            tags_new: Set = tags.union(source.tags)
+            whitelisted: bool = len(whitelist_new) != 0 and\
+                    len(whitelist_new.difference(tags_new)) != 0 and\
+                    index + 1 == len(self.options)
+            print(source.name, whitelist_new, tags_new, whitelisted)
+            if whitelisted:
+                continue
             if index + 1 < len(self.options):
                 blacklist_new: Set = blacklist.union(source.blacklist)
-                tags_new: Set = tags.union(source.tags)
-                ext: Dict = (self._enumerate_codes(index + 1, tags_new, blacklist_new))
+                ext: Dict = (self._enumerate_codes(index + 1, tags_new, blacklist_new, whitelist_new))
                 for sci, src_code in enumerate(source.codes()):
                     basename: str = source.name
                     if len(source.codes()) > 1:
@@ -104,12 +113,13 @@ class MixerProgram:
                     name: str = source.name
                     if len(source.codes()) > 1:
                         name += sci
-                    total[name] = src_code
+                    # print(f'Enum{sci}')
+                    total[name] = src_code#.exclude()
         return total
     
     def enumerate_codes(self) -> Dict[str, Code]:
         '''Return a dictionary with keys of concatenated source names mapped to their code values'''
-        d: Dict = self._enumerate_codes(0, set(), set())
+        d: Dict = self._enumerate_codes(0, set(), set(), set())
         return dict(map(lambda x: (path.join(self.destdir, x[0]), x[1]), d.items()))
 
 _singletons: Dict[str, type] = {}
@@ -147,4 +157,44 @@ def loads(source: str) -> MixerProgram:
     mixer: Dict = json.loads(source, object_pairs_hook = _decode_pairs)
     return MixerProgram(**mixer)
 
+async def render_program(source: str, outputdir: str = '.', **options) -> bool:
+    mixer: MixerProgram = load(source)
+    client: imagegen.KisekautoClient = await imagegen.KisekautoClient.connect()
+    print('Connected to client')
+    success: bool = True
+    for name, code in mixer.enumerate_codes().items():
+        code = code.exclude()
+        destdir: str = path.join(outputdir, name + '.png')
+        print(f'Rendering {name} to {destdir}...')
+        await client.apply_code(code)
+        success &= await client.capture_character(destdir, 0, **options)
+    await client.close()
+    return success
 
+def output_codes(source: str, outputdir: str = '.') -> None:
+    mixer: MixerProgram = load(source)
+    for name, code in mixer.enumerate_codes().items():
+        destdir: str = path.join(outputdir, name + '.kkl')
+        with open(destdir, 'w') as file:
+            file.write(str(code))
+
+def main(argv):
+    import argparse
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(description=
+        'A utility for rendering batches of codes to images')
+    parser.add_argument('-i', '--input', nargs='*', help='Any number of file patterns to match')
+    parser.add_argument('-o', '--outputdir', default='.', help='A base directory for output files')
+    parser.add_argument('-q', '--fast', action='store_true', help=
+        'Produce image faster, but larger')
+    parser.add_argument('-x', '--scale', type=int, help='Scale factor for rendering')
+    parser.add_argument('-c', '--code', action='store_true', help='Only output the merged codes')
+    args = parser.parse_args(argv)
+    if args.merge:
+        output_codes(args.input, args.outputdir)
+    else:
+        opts = {'scale': args.scale, 'fast': args.fast}
+        asyncio.run(render_all(args.input, args.outputdir, **opts))
+        asyncio.run(render_program('mixertest.json'))
+    
+if __name__ == '__main__':
+    main(sys.argv[1:])
