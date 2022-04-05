@@ -1,0 +1,2 @@
+recursive-include src/kisekauto *.kkl *.json
+global-include *.md *.txt
