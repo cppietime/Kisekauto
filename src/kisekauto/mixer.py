@@ -189,7 +189,7 @@ def main(argv):
     parser.add_argument('-x', '--scale', type=int, help='Scale factor for rendering')
     parser.add_argument('-c', '--code', action='store_true', help='Only output the merged codes')
     args = parser.parse_args(argv)
-    if args.merge:
+    if args.code:
         output_codes(args.input, args.outputdir)
     else:
         opts = {'scale': args.scale, 'fast': args.fast}
