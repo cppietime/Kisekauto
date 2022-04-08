@@ -1,5 +1,7 @@
 *.png
 *.jpg
 *.ppm
+*.kkl
 __pycache__/
 kisekauto/bank/test/
+dist/

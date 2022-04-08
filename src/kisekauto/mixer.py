@@ -93,7 +93,6 @@ class MixerProgram:
             whitelisted: bool = len(whitelist_new) != 0 and\
                     len(whitelist_new.difference(tags_new)) != 0 and\
                     index + 1 == len(self.options)
-            print(source.name, whitelist_new, tags_new, whitelisted)
             if whitelisted:
                 continue
             if index + 1 < len(self.options):
@@ -189,12 +188,12 @@ def main(argv):
     parser.add_argument('-x', '--scale', type=int, help='Scale factor for rendering')
     parser.add_argument('-c', '--code', action='store_true', help='Only output the merged codes')
     args = parser.parse_args(argv)
-    if args.code:
-        output_codes(args.input, args.outputdir)
-    else:
-        opts = {'scale': args.scale, 'fast': args.fast}
-        asyncio.run(render_all(args.input, args.outputdir, **opts))
-        asyncio.run(render_program('mixertest.json'))
+    opts = {'scale': args.scale, 'fast': args.fast}
+    for i in args.input:
+        if args.code:
+            output_codes(i, args.outputdir)
+        else:
+            asyncio.run(render_program(i, args.outputdir, **opts))
     
 if __name__ == '__main__':
     main(sys.argv[1:])
